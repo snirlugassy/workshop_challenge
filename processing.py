@@ -112,15 +112,12 @@ class Processing:
 
                 for i in range(len(vec)):
 
-                    if vec[i] == 0:
+                    if vec[i] < 1:
                         continue
-
-                    vec[i] = (1 + math.log10(vec[i])) * math.log10(self.numdocs / self.df[self.inv_words[i]])
+                    vec[i] =(1 + math.log10(vec[i])) * math.log10(self.numdocs / self.df[self.inv_words[i]])
 
             self.proccessed_articles.append({'article': vec, 'tags': article.tags})
 
-
-        return doc_set, reg_representation
 
     def parse_article(self, art):
 
