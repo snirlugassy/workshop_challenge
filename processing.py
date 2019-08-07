@@ -30,7 +30,6 @@ class Processing:
         return word
 
     def create_words_bank(self):
-        print("Creating word bank")
         index = 0
         for art in self.articles:
             seen_in_this_article = []
@@ -53,6 +52,9 @@ class Processing:
                     self.words[word] = index  # add it
                     index += 1
 
+        for word in self.df.keys():
+            self.df[word] = math.log10(self.numdocs / self.df[word])
+
     def build_train_set(self):
         for article in self.articles:
             vec = np.zeros(len(self.words))
@@ -72,7 +74,7 @@ class Processing:
                 for i in range(len(vec)):
                     if vec[i] < 1:
                         continue
-                    vec[i] = (1 + math.log10(vec[i])) * math.log10(self.numdocs / self.df[self.inv_words[i]])
+                    vec[i] = (1 + math.log10(vec[i])) * self.df[self.inv_words[i]]
 
             self.proccessed_articles.append({'article': vec, 'tags': article.tags})
 
@@ -95,8 +97,8 @@ class Processing:
                 vec[self.words[word]] += 1
 
         for i in range(len(vec)):
-            if vec[i] == 0:
+            if vec[i] < 1:
                 continue
-            vec[i] = (1 + math.log10(vec[i])) * math.log10(self.numdocs / self.df[self.inv_words[i]])
+            vec[i] = (1 + math.log10(vec[i])) * self.df[self.inv_words[i]]
 
         return vec

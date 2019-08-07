@@ -15,16 +15,11 @@ class ReutersData:
         try:
             with open(PICKLED_FILE_NAME, "rb") as pickle_file:
                 self.data = pickle.load(pickle_file)
-            print("pickle found")
-            print(self.data)
         except (FileNotFoundError, pickle.UnpicklingError):
             # the data isn't pickled
             # load the data and pickle it!
-            print("no pickle")
             for file in files:
-                print("working on file " + file)
                 self.read_file(file)
-                print(self.data)
             # pickle.dump(self.data, open(PICKLED_FILE_NAME, "wb"))
 
     def read_file(self, path):
@@ -40,7 +35,9 @@ class ReutersData:
                     # parser = lxml.etree.XMLParser(ns_clean=True)
                     tree = ElementTree.fromstring(doc)
                     parsed = xmljson.parker.data(tree)
-                    self.data.append(self.xml_to_article(parsed))
+                    constructed_article = self.xml_to_article(parsed)
+                    if len(constructed_article.tags) > 0:
+                        self.data.append(constructed_article)
                 except ElementTree.ParseError:
                     continue
 

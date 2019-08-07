@@ -1,11 +1,14 @@
 import numpy as np
 from collections import OrderedDict
 from processing import Processing
-import article
+import pickle
+
 
 def euclidean_dist(article1, article2):
     return np.linalg.norm(article1-article2)
 
+PICKLED_PROCESSOR = "processor.pickle"
+PICKLED_ARTICLES = "articles.pickle"
 
 class KNN:
     def __init__(self, k):
@@ -13,10 +16,34 @@ class KNN:
         self.data = []
 
     def fit(self, articles):
-        print("Fitting data")
-        self.processor = Processing(articles)
-        print("Processed articles")
-        self.data = self.processor.proccessed_articles
+        try:
+            with open(PICKLED_PROCESSOR, "rb") as processor_file:
+                self.processor = pickle.load(processor_file)
+                self.data = self.processor.proccessed_articles
+                print("PICKLE WORKED!")
+            # with open(PICKLED_ARTICLES, "rb") as known_articles_file:
+            #     known_articles = pickle.load(known_articles_file)
+            #     if known_articles == articles:
+            #         with open(PICKLED_PROCESSOR, "rb") as processor_file:
+            #             self.processor = pickle.load(processor_file)
+            #             self.data = self.processor.proccessed_articles
+            #             print("PICKLE WORKED!")
+        except (FileNotFoundError, pickle.UnpicklingError):
+            # the data isn't pickled
+            # load the data and pickle it!
+            print("NO PICKLE")
+            self.processor = Processing(articles)
+            self.data = self.processor.proccessed_articles
+
+            with open(PICKLED_PROCESSOR, "wb") as processor_file:
+                pickle.dump(self.processor, processor_file)
+                print("CREATED PROCESSOR FILE")
+
+            # with open(PICKLED_ARTICLES, "wb") as articles_file:
+            #     pickle.dump(articles, articles_file)
+            #     print("CREATED ARTICLES FILE")
+
+
 
     def predict(self, new_article):
         list_dist = []
