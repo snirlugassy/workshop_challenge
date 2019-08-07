@@ -50,14 +50,14 @@ class KNN:
         list_sum_tags = []
         new_article = self.processor.parse_article(new_article)
         for article in self.data:
-            list_dist.append(euclidean_dist(new_article, article['article']))
+            list_dist.append(euclidean_dist(np.array(new_article), np.array(article['article'])))
             list_sum_tags.append(len(article['tags']))
         assert len(list_dist) == len(self.data)
         zipped = list(zip(list_dist, list_sum_tags, self.data))
         zipped.sort(key=lambda x: x[0])
         zipped = zipped[:self.k]
         list_sum_tags = (list(zip(*zipped)))[1]
-        num_of_tags = round(sum(list_sum_tags)/self.k)
+        num_of_tags = round(sum(list_sum_tags)/self.k)+1
         relevant_data = (list(zip(*zipped)))[2]
         tags_dict = OrderedDict()
         for article in relevant_data:

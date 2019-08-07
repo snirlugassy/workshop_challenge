@@ -5,6 +5,8 @@ import article
 
 TRAINING_DATA_PATH = "data/"
 
+K = 25
+
 
 def full_path(base, filename):
     if base[-1] != "/":
@@ -21,7 +23,7 @@ class Model:
 
         training_data = ReutersData(training_data_files)
 
-        self.classifiar = KNN(3)
+        self.classifiar = KNN(K)
         self.classifiar.fit(training_data.get_data())
 
     def predict(self, testing_data_path):

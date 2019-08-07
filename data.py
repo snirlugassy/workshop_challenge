@@ -4,7 +4,6 @@ from html import unescape
 import pickle
 from article import Article
 import re
-# import lxml
 
 PICKLED_FILE_NAME = "training_data.pickle"
 

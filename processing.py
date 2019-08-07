@@ -56,9 +56,12 @@ class Processing:
             self.df[word] = math.log10(self.numdocs / self.df[word])
 
     def build_train_set(self):
+        count = 0
         for article in self.articles:
-            vec = np.zeros(len(self.words))
-
+            print(count)
+            count += 1
+            # vec = np.zeros(len(self.words))
+            vec = [0] * len(self.words)
             for word in article.title.split():
                 word = self.pre_process_word(word)
                 if word == '':
@@ -74,8 +77,7 @@ class Processing:
                 for i in range(len(vec)):
                     if vec[i] < 1:
                         continue
-                    vec[i] = (1 + math.log10(vec[i])) * self.df[self.inv_words[i]]
-
+                    vec[i] = vec[i] * self.df[self.inv_words[i]]
             self.proccessed_articles.append({'article': vec, 'tags': article.tags})
 
     def parse_article(self, art):
