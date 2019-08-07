@@ -2,8 +2,10 @@ import numpy as np
 from collections import OrderedDict
 import processing
 import article
+
 def euclidean_dist(article1, article2):
     return np.linalg.norm(article1-article2)
+
 
 class KNN:
     def _init_(self, k):
