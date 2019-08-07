@@ -8,7 +8,7 @@ def euclidean_dist(article1, article2):
 
 
 class KNN:
-    def _init_(self, k):
+    def __init__(self, k):
         self.k = k
         self.data = []
 
