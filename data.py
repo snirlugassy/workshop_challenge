@@ -22,9 +22,6 @@ class ReutersData:
                 self.read_file(file)
             pickle.dump(self.data, open(PICKLED_FILE_NAME, "wb"))
 
-    def get_data(self):
-        return self.data
-
     def read_file(self, path):
         with open(path, "r") as file:
             file.readline()
@@ -47,7 +44,7 @@ class ReutersData:
             text = ""
 
         tags = set()
-        labels_wrappers = ["TOPICS", "PLACES", "PEOPLE"]
+        labels_wrappers = ["TOPICS", "PLACES", "PEOPLE", "ORGS", "EXCHANGES", "COMPANIES"]
         for label in labels_wrappers:
             if label in doc.keys():
                 try:
@@ -63,11 +60,5 @@ class ReutersData:
 
         return Article(title, text, tags)
 
-    def get_raw_data(self):
+    def get_data(self):
         return self.data
-
-    def get_processed_data(self):
-        # processed = processing.
-        processed = self.data
-        return processed
-
