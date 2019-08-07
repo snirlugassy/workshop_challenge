@@ -1,6 +1,6 @@
 import numpy as np
 from collections import OrderedDict
-import processing
+from processing import Processing
 import article
 
 def euclidean_dist(article1, article2):
@@ -13,7 +13,9 @@ class KNN:
         self.data = []
 
     def fit(self, articles):
-        self.processor = processing.Processing(articles)
+        print("Fitting data")
+        self.processor = Processing(articles)
+        print("Processed articles")
         self.data = self.processor.proccessed_articles
 
     def predict(self, new_article):

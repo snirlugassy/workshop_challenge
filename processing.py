@@ -30,6 +30,7 @@ class Processing:
         return word
 
     def create_words_bank(self):
+        print("Creating word bank")
         index = 0
         for art in self.articles:
             seen_in_this_article = []
@@ -69,7 +70,7 @@ class Processing:
                 vec[self.words[word]] += 1
 
                 for i in range(len(vec)):
-                    if vec[i] == 0:
+                    if vec[i] < 1:
                         continue
                     vec[i] = (1 + math.log10(vec[i])) * math.log10(self.numdocs / self.df[self.inv_words[i]])
 
@@ -82,13 +83,16 @@ class Processing:
             word = self.pre_process_word(word)
             if word == '':
                 continue
-            vec[self.words[word]] += 2
+
+            if word in self.words.keys():
+                vec[self.words[word]] += 2
 
         for word in art.text.split():
             word = self.pre_process_word(word)
             if word == '':
                 continue
-            vec[self.words[word]] += 1
+            if word in self.words.keys():
+                vec[self.words[word]] += 1
 
         for i in range(len(vec)):
             if vec[i] == 0:
