@@ -119,6 +119,9 @@ class Processing:
 
             self.proccessed_articles.append({'article': vec, 'tags': article.tags})
 
+
+        return doc_set, reg_representation
+
     def parse_article(self, art):
 
         vec = np.zeros(len(self.words))
